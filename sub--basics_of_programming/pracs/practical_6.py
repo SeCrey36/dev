@@ -11,17 +11,17 @@ class Airplane:
         self.lock_business_seats = 0
         self.lock_first_class_seats = 0
 
-    
+
 class Zone:
     def __init__(self, name, tariff):
         self.name = name
         self.tariff = tariff
-    
+
 
 class Booking:
     def __init__(self):
         self.reserved_seats = []
-    
+
     def reserve_seat(self, seat):
         self.reserved_seats.append(seat)
 
@@ -59,7 +59,7 @@ def plane_info(airplanes, plane_name):
                        f"Economy seats: {temp['economy_seats'] - temp['lock_economy_seats']}\n" \
                        f"Business seats: {temp['business_seats'] - temp['lock_business_seats']}\n" \
                        f"1st class seats: {temp['first_class_seats'] - temp['lock_first_class_seats']}\n"
-            
+
             return info_str
 
 
@@ -105,7 +105,7 @@ def main():
     airplanes = []
     while True:
         com = input('''
-Commands: 
+Commands:
     1 - add airplane
     2 - print airplane info
     3 - reserve seat

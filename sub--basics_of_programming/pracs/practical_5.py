@@ -5,7 +5,8 @@ import os
 
 
 def alf_cfg():
-    '''Config alf'''
+    '''Function for configuring and dividing the alphabet into 2 parts'''
+    # TODO: selection of alphabet of different languages
     alf = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 .'
     return (alf[:32], alf[32:])
 
@@ -42,7 +43,7 @@ def main():
 
     while True:
         com = input('''
-Commands: 
+Commands:
     1 - select file to encode (decode)
     2 - quit
         ''')

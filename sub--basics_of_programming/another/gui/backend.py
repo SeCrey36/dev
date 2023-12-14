@@ -1,4 +1,5 @@
 """Practical 6"""
+import json
 
 class Main:
     """Class main: обёрточный класс для взаимодействия"""
@@ -17,15 +18,15 @@ class Main:
         except ValueError:
             print('Input must be int')
 
-    def add_airplane(self):
+    def add_airplane_object(self, info):
         """Func: add airplane to airplanes list"""
-        airplane = Airplane(input('Input airplane name: '))
-        zone1 = Zone("Economy Class", "Low", int(input('Eco seats: '))*[0],
-                     int(input('Eco price: ')))
-        zone2 = Zone("Business Class", "Medium", int(input('Business seats: '))*[0],
-                     int(input('Business price: ')))
-        zone3 = Zone("First Class", "High", int(input('Elite seats: '))*[0],
-                     int(input('Elite price: ')))
+        airplane = Airplane(info[0])
+        zone1 = Zone("Economy Class", "Low", info[1]*[0],
+                      info[2])
+        zone2 = Zone("Business Class", "Medium", info[3]*[0],
+                     info[4])
+        zone3 = Zone("First Class", "High", info[5]*[0],
+                     info[6])
         airplane.zones = [zone1, zone2, zone3]
         self.airplanes.append(airplane)
 
@@ -68,8 +69,6 @@ class Main:
         else:
             print('Choose airplane!')
 
-
-
     def del_book(self):
         """Func: delete booking"""
         if self.airplane is not None:
@@ -84,6 +83,23 @@ class Main:
                 print('Incorrect')
         else:
             print('Choose airplane!')
+
+    def load_json(self):
+        info = [name, e_seats, e_price, b_seats, b_price, f_seats, f_price]
+        Main.add_airplane_object(info)
+
+    def add_airplane(self, info):
+        json_str = {'name': info[0],
+                    'e_seats': info[1],
+                    'e_price': info[2],
+                    'b_seats': info[3],
+                    'b_price': info[4],
+                    'f_seats': info[5],
+                    'f_price': info[6],
+                    }
+        with open('sub--basics_of_programming/another/gui/cfg/data.json', 'w', encoding="utf-8") as f:
+            f.write(json.dumps(json_str))
+        Main.add_airplane_object(self, 1)
 
 
 class Airplane:

@@ -5,10 +5,14 @@ import sys
 
 
 def encode(temp):
-    """Function of encode
+    '''
+    Function for configuring and dividing the alphabet into 2 parts.
 
-    This function encoded string to short format.
-    Example: aaab -> a3b"""
+    This function is necessary to configure the alphabet for further work with it
+
+    Returns:
+    tuple with 2 strings with split alphabet
+    '''
     enc_str = ''
     cnt = 1
     for i in range(1, len(temp)):
@@ -45,7 +49,7 @@ def main():
     encode_str = None
     while True:
         com = input('''
-Commands: 
+Commands:
     1 - input string and encode
     2 - decode string from input
     3 - quit
