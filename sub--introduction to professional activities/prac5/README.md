@@ -1,5 +1,8 @@
 <h1 align="center">Проект "Autoavia"</h1>
-![Иллюстрация](AAAAAA.jpg)
+
+![Иллюстрация](papich.jpg)
+
+<h1 align="center">...utoavia</h1>
 
 # Контент
 
