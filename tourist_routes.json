@@ -1,0 +1,11 @@
+[
+  {
+    "name": "1",
+    "departure": "1",
+    "destination": "1",
+    "duration": 1,
+    "special_equipment": [
+      "1"
+    ]
+  }
+]

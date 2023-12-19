@@ -85,21 +85,25 @@ class Main:
             print('Choose airplane!')
 
     def load_json(self):
-        info = [name, e_seats, e_price, b_seats, b_price, f_seats, f_price]
-        Main.add_airplane_object(info)
+        try:
+            with open('sub--basics_of_programming/another/gui/cfg/data.json', 'r', encoding="utf-8") as f:
+                return json.load(f)
+        except FileNotFoundError:
+            return []
 
-    def add_airplane(self, info):
+    def add_airplane(self, data, info):
         json_str = {'name': info[0],
-                    'e_seats': info[1],
+                    'e_seats': info[1]*[0],
                     'e_price': info[2],
-                    'b_seats': info[3],
+                    'b_seats': info[3]*[0],
                     'b_price': info[4],
-                    'f_seats': info[5],
+                    'f_seats': info[5]*[0],
                     'f_price': info[6],
                     }
         with open('sub--basics_of_programming/another/gui/cfg/data.json', 'w', encoding="utf-8") as f:
-            f.write(json.dumps(json_str))
-        Main.add_airplane_object(self, 1)
+            data.append(json_str)
+            json.dump(data, f)
+        Main.add_airplane_object(self, info)
 
 
 class Airplane:
@@ -148,7 +152,7 @@ class Zone:
         self.tariff = tariff
         self.price = price
         self.seats = seats
-
+ 
 
     def __str__(self):
         res = ''
