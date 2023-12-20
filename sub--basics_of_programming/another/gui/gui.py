@@ -4,27 +4,7 @@
 import sys
 import os
 import tkinter as tk
-
-
-def list_win_gui():
-    win_list = tk.Toplevel(win)
-    win_list.title("Ancet Loop")
-    win_list.iconbitmap('sub--basics_of_programming/another/gui/cfg/icon.ico')
-    win_list.geometry("350x400+400+150")
-    win_list.resizable(False, False)
-
-    frame3 = tk.Frame(win_list, width=350, height=400)
-    btn_accept = tk.Button(frame3, text = "Принять ученика", font = ("Calibri", 12, "bold"),
-                           bg='green', fg = 'white', command = donothing)
-    btn_not_accept = tk.Button(frame3, text = "Не принимать", font = ("Calibri", 12, "bold"),
-                           bg='red', fg = 'white', command = donothing)
-    text_info = tk.Text(frame3)
-
-    frame3.pack()
-    btn_accept.place(x=190, y=360, height=30, width=150)
-    btn_not_accept.place(x=10, y=360, height=30, width=150)
-    text_info.place(x=10, y=10, height=340, width=330)
-
+from tkinter import messagebox
 
 
 def donothing():
@@ -35,7 +15,7 @@ def show_info_about_programm():
     tk.messagebox.showinfo("О программе", "Программа еще находится в разработке (70%)")
 
 
-def openreadme(): 
+def openreadme():
     filename = 'sub--basics_of_programming/another/gui/cfg/guide.txt'
     os.system("start " + filename)
 
@@ -44,21 +24,21 @@ def quit_from_programm():
     sys.exit()
 
 
-def open_change_win():
-    if st_name == 0:
+def open_append_win():
+    if True == 0:
         tk.messagebox.showerror("Ошибка!", "Для изменения необходимо выбрать ученика")
     else:
-        win_change = tk.Toplevel(win)
-        win_change.title("INFO Change")
-        win_change.iconbitmap('sub--basics_of_programming/another/gui/cfg/icon.ico')
-        win_change.geometry("350x400+400+150")
-        win_change.resizable(False,False)
+        win_append = tk.Toplevel(win)
+        win_append.title("INFO Change")
+        win_append.iconbitmap('sub--basics_of_programming/another/gui/cfg/icon.ico')
+        win_append.geometry("350x400+400+150")
+        win_append.resizable(False,False)
 
-        frame2 = tk.Frame(win_change, width=350, height=400)
+        frame2 = tk.Frame(win_append, width=350, height=400)
         label2_1 = tk.Label(frame2, text = "Ученик", justify = 'left', font = ("Calibri", 14, "bold"))
         label2_2 = tk.Label(frame2, text = "Родитель", justify = 'left', font = ("Calibri", 14, "bold"))
 
-        btnApply = tk.Button(frame2, text = "Применить изменения", font = ("Calibri", 12, "bold"), 
+        btn_apply = tk.Button(frame2, text = "Применить изменения", font = ("Calibri", 12, "bold"),
                       command = donothing)
 
         st_ent2_1 = tk.Entry(frame2, textvariable = 1)
@@ -77,7 +57,9 @@ def open_change_win():
         pr_ent2_1.place(x=10, y=140, height=20, width=330)
         pr_ent2_2.place(x=10, y=165, height=20, width=330)
         pr_ent2_3.place(x=10, y=190, height=20, width=330)
-        btnApply.place(x=20, y=360, height=30, width=310)
+        btn_apply.place(x=20, y=360, height=30, width=310)
+
+        win.grab_set()
 
 
 # НАСТРОЙКА ОКНА
@@ -124,7 +106,7 @@ btnContract = tk.Button(frame, text = "Сформировать договор",
 btnDelete = tk.Button(frame, text = "Удалить ученика", font = ("Calibri", 12, "bold"),
                       command = donothing)
 btnChange = tk.Button(frame, text = "Изменить информацию", font = ("Calibri", 12, "bold"),
-                      command = open_change_win)
+                      command = open_append_win)
 
 frame.pack()
 label1.place(x=375, y=5, height=30, width=300)

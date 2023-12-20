@@ -55,7 +55,7 @@ def check_files_dir():
     files = []
     for file in fullpaths:
         if os.path.isfile(file): files.append(file)
-        
+
 def acc_student():
     cursor.execute(f"insert into parent values (default,'{par_name}', '{par_sur}', '{par_otch}', '{par_num}', '{par_ser}', '{par_pasnum}', '{par_vidan}')")
     connection.commit()
@@ -69,7 +69,7 @@ def acc_student():
     subject_id = str(cursor.fetchall()[0][0])
     cursor.execute(f"insert into students_has_subjects values ('{student_id}', '{subject_id}')")
     connection.commit()
-    
+
     if len(files) == 0:
         win_list.destroy()
         messagebox.showerror("Внимание!", "Заявок больше нет")
@@ -82,7 +82,7 @@ def kick_student():
         messagebox.showinfo("Внимание!", "Заявок больше нет")
     else:
         update_list_win()
-    
+
 def update_list_win():
     global stud_name
     global stud_sur
@@ -96,7 +96,7 @@ def update_list_win():
     global par_vidan
     global par_num
     global lesson
-    
+
     text_info.delete("1.0","end")
     file_name = files[0]
     wb = load_workbook(file_name)
@@ -116,15 +116,15 @@ def update_list_win():
     wb.close()
     os.remove(files[0])
     files.pop(0)
-    
+
     message = str(f'''Имя: {stud_name}\nФамилия: {stud_sur}\nОтчество: {stud_otch}\nВозраст: {stud_age}
 \nИмя родителя: {par_name}\nФамилия родителя: {par_sur}\nОтчество родителя: {par_otch}
 Номер: {par_num}\n\nПредметы: {lesson}''')
     text_info.insert(1.0, message)
-    
+
 
 # Окно заявок работает следующим образом: проверяются заявки выгруженные на сервер при помощи функции check_files_dir.
-# Затем мы подтягиваем информацию update_list_win, попутно удаляя файл заявки, следующий элемент становится первым 
+# Затем мы подтягиваем информацию update_list_win, попутно удаляя файл заявки, следующий элемент становится первым
 # на очереди, принятие записывает информацию в БД, отказ просто переносит нас на следующую анкету при помощи update_list_win
 
 def list_win_gui():
@@ -139,24 +139,24 @@ def list_win_gui():
         win_list.iconbitmap('icon.ico')
         win_list.geometry("350x400+400+150")
         win_list.resizable(False,False)
-        
+
         frame3 = tk.Frame(win_list, width=350, height=400)
-        btn_accept = tk.Button(frame3, text = "Принять ученика", font = ("Calibri", 12, "bold"), 
+        btn_accept = tk.Button(frame3, text = "Принять ученика", font = ("Calibri", 12, "bold"),
                                bg='green', fg = 'white', command = acc_student)
-        btn_not_accept = tk.Button(frame3, text = "Не принимать", font = ("Calibri", 12, "bold"), 
+        btn_not_accept = tk.Button(frame3, text = "Не принимать", font = ("Calibri", 12, "bold"),
                                bg='red', fg = 'white', command = kick_student)
         text_info = tk.Text(frame3)
-        
+
         frame3.pack()
         btn_accept.place(x=190, y=360, height=30, width=150)
         btn_not_accept.place(x=10, y=360, height=30, width=150)
         text_info.place(x=10, y=10, height=340, width=330)
-        
+
         update_list_win()
-    
+
 def donothing():
     print('Done')
-    
+
 def export():
     if st_name == 0:
         messagebox.showerror("Ошибка!", "Для изменения необходимо выбрать ученика")
@@ -164,9 +164,9 @@ def export():
         current_date = date.today()
         filename = fd.askopenfilename()
         doc = DocxTemplate(filename)
-        context = {'pn' : pr_name, 'psur' : pr_surname, 'potch' : pr_otchestvo, 'stn' : st_name, 
+        context = {'pn' : pr_name, 'psur' : pr_surname, 'potch' : pr_otchestvo, 'stn' : st_name,
                    'stsur' : st_surname, 'stotch' : st_otchestvo, 'tn' : tch_name, 'tsur' : tch_surname,
-                   'totch' : tch_otchestvo, 'telephone' : pr_number, 'date' : current_date, 
+                   'totch' : tch_otchestvo, 'telephone' : pr_number, 'date' : current_date,
                    'tser' : tch_pas_ser, 'tnum' : tch_pas_num, 'tvid' : tch_pas_vid,
                    'pser' : pr_pas_ser, 'pnum' : pr_pas_num, 'pvid' : pr_pas_vid}
         doc.render(context)
@@ -205,7 +205,7 @@ def search_button():
         st_otchestvo = info[0][3]
         st_age = str(info[0][4])
         st_parent_id = str(info[0][5])
-                
+
         cursor.execute(f"select * from parent where id = '{st_parent_id}'")
         info2 = cursor.fetchall()
         pr_name = info2[0][1]
@@ -215,14 +215,14 @@ def search_button():
         pr_pas_ser = str(info2[0][5])
         pr_pas_num = str(info2[0][6])
         pr_pas_vid = str(info2[0][7])
-            
+
         cursor.execute(f"select subjects_id from students_has_subjects where students_id = '{st_id}'")
         lesson_id = str(cursor.fetchall()[0][0])
         cursor.execute(f"select * from subjects where id = '{lesson_id}'")
         info3 = cursor.fetchall()
         teacher_id = info3[0][2]
         subjects = info3[0][1]
-                                                                           
+
         cursor.execute(f"select * from teacher where id = '{teacher_id}'")
         info4 = cursor.fetchall()
         tch_name = info4[0][1]
@@ -231,20 +231,20 @@ def search_button():
         tch_pas_ser = info4[0][6]
         tch_pas_num = info4[0][7]
         tch_pas_vid = info4[0][8]
-            
+
         message = str(f'''Имя: {st_name}\nФамилия: {st_surname}\nОтчество: {st_otchestvo}\nВозраст: {st_age}
 \nИмя родителя: {pr_name}\nФамилия родителя: {pr_surname}\nОтчество родителя: {pr_otchestvo}
 Номер: {pr_number}\n\nПредметы: {subjects}\n\nУчитель: {tch_surname} {tch_name} {tch_otchestvo}''')
         textbox.insert(1.0, message)
     except:
-        textbox.insert(1.0, '\nУченик не найден!')  
+        textbox.insert(1.0, '\nУченик не найден!')
 
 def show_info_about_programm():
     messagebox.showinfo("О программе", "Программа еще находится в разработке (70%)")
-    
-def openreadme(): 
+
+def openreadme():
     filename = './guide.txt'
-    os.system("start " + filename) 
+    os.system("start " + filename)
 
 def quit_from_programm():
     sys.exit()
@@ -259,12 +259,12 @@ def create_connection(host_name, user_name, user_password, db_name):
             database=db_name
             )
         print("Connection to MySQL DB successful")
-        label_con = tk.Label(frame, text = "Соединение с базой данных успешно", 
+        label_con = tk.Label(frame, text = "Соединение с базой данных успешно",
                              font = ("Calibri", 12, "bold"), fg = "green")
         label_con.place(x=10, y=370, height=30, width=270)
     except Error as e:
         print(f"The error '{e}' occurred")
-        label_con = tk.Label(frame, text = "Ошибка соединения с базой данных", 
+        label_con = tk.Label(frame, text = "Ошибка соединения с базой данных",
                              font = ("Calibri", 12, "bold"), fg = "red")
         label_con.place(x=10, y=370, height=30, width=270)
     return connection
@@ -280,34 +280,34 @@ def open_change_win():
         pr_change_name = StringVar()
         pr_change_surname = StringVar()
         pr_change_otchestvo = StringVar()
-        
+
         win_change = tk.Toplevel(win)
         win_change.title("INFO Change")
         win_change.iconbitmap('icon.ico')
         win_change.geometry("350x400+400+150")
         win_change.resizable(False,False)
-        
+
         frame2 = tk.Frame(win_change, width=350, height=400)
         label2_1 = tk.Label(frame2, text = "Ученик", justify = 'left', font = ("Calibri", 14, "bold"))
         label2_2 = tk.Label(frame2, text = "Родитель", justify = 'left', font = ("Calibri", 14, "bold"))
-        
-        btnApply = tk.Button(frame2, text = "Применить изменения", font = ("Calibri", 12, "bold"), 
+
+        btnApply = tk.Button(frame2, text = "Применить изменения", font = ("Calibri", 12, "bold"),
                       command = donothing)
-        
+
         st_ent2_1 = tk.Entry(frame2, textvariable = s_change_name)
         st_ent2_2 = tk.Entry(frame2, textvariable = s_change_surname)
         st_ent2_3 = tk.Entry(frame2, textvariable = s_change_otchestvo)
         pr_ent2_1 = tk.Entry(frame2, textvariable = pr_change_name)
         pr_ent2_2 = tk.Entry(frame2, textvariable = pr_change_surname)
         pr_ent2_3 = tk.Entry(frame2, textvariable = pr_change_otchestvo)
-        
+
         st_ent2_1.insert(0, st_name)
         st_ent2_2.insert(0, st_surname)
         st_ent2_3.insert(0, st_otchestvo)
         pr_ent2_1.insert(0, pr_name)
         pr_ent2_2.insert(0, pr_surname)
         pr_ent2_3.insert(0, pr_otchestvo)
-        
+
         frame2.pack()
         label2_1.place(x=10, y=0, height=25, width=100)
         st_ent2_1.place(x=10, y=30, height=20, width=330)
@@ -318,8 +318,8 @@ def open_change_win():
         pr_ent2_2.place(x=10, y=165, height=20, width=330)
         pr_ent2_3.place(x=10, y=190, height=20, width=330)
         btnApply.place(x=20, y=360, height=30, width=310)
-        
-        
+
+
 # НАСТРОЙКА ОКНА
 win = tk.Tk()
 win.title("AutoDoc")
@@ -327,14 +327,14 @@ win.iconbitmap('icon.ico')
 win.geometry("700x420+400+150")
 win.resizable(False,False)
 win.minsize(300,350)
-                                                                                
+
 # МЕНЮ ПРОГРАММЫ
-menuTop = tk.Menu(win)  
+menuTop = tk.Menu(win)
 win.config(menu = menuTop)
 
 submenuDown = tk.Menu(menuTop, tearoff = 0)
-menuTop.add_cascade(label = 'Действие', menu = submenuDown)  
-submenuDown.add_command(label = 'Составить договор', command = export) 
+menuTop.add_cascade(label = 'Действие', menu = submenuDown)
+submenuDown.add_command(label = 'Составить договор', command = export)
 submenuDown.add_command(label = 'Список несортированных учеников', command = list_win_gui)
 submenuDown.add_command(label = 'Импортировать анкету', command = import_ancet)
 submenuDown.add_separator()
@@ -362,9 +362,9 @@ textbox = tk.Text(frame)
 btnSearch = tk.Button(frame, text = "Найти", font = ("Calibri", 12, "bold"), command = search_button)
 btnContract = tk.Button(frame, text = "Сформировать договор", font = ("Calibri", 12, "bold"),
                         command = export)
-btnDelete = tk.Button(frame, text = "Удалить ученика", font = ("Calibri", 12, "bold"), 
+btnDelete = tk.Button(frame, text = "Удалить ученика", font = ("Calibri", 12, "bold"),
                       command = donothing)
-btnChange = tk.Button(frame, text = "Изменить информацию", font = ("Calibri", 12, "bold"), 
+btnChange = tk.Button(frame, text = "Изменить информацию", font = ("Calibri", 12, "bold"),
                       command = open_change_win)
 
 frame.pack()
@@ -379,7 +379,7 @@ btnContract.place(x=375, y=210, height=30, width=300)
 btnChange.place(x=375, y=315, height=30, width=300)
 btnDelete.place(x=375, y=355, height=30, width=300)
 
-connection = create_connection("localhost", "root", "a$12df341212", "mydb")     
+connection = create_connection("localhost", "root", "a$12df341212", "mydb")
 cursor = connection.cursor()
 connection.commit()
 
@@ -387,14 +387,14 @@ connection.commit()
 #connection.close()
 
 
-# Цикл берет анкеты с сайта, удаляет их и перетаскивает в локальную папку (папку программы), 
+# Цикл берет анкеты с сайта, удаляет их и перетаскивает в локальную папку (папку программы),
 # попутно уведомляя о новых анкетах
 
 while True:
     try:
         dirname = 'C:/Apache24/htdocs/autodoc/files'
         dirfiles = os.listdir(dirname)
-        
+
         url = 'http://127.0.0.1/autodoc/files/'+dirfiles[0]
         urllib.request.urlretrieve(url, f'./files/{dirfiles[0]}')
         file_path = f'C:/Apache24/htdocs/autodoc/files/{dirfiles[0]}'
@@ -404,5 +404,5 @@ while True:
         if cnt_ancets>0:
             messagebox.showinfo("Внимание!", "Появились новые заявки, для их рассмотрения: Действие>Список несортированных учеников")
         break
-                                           
+
 win.mainloop()

@@ -2,26 +2,23 @@ from tkinter import *
 from tkinter import ttk
 
 root = Tk()
-root.title("test")
+root.title("METANIT.COM")
 root.geometry("250x200")
 
+def selected(event):
+    # получаем выделенный элемент
+    selection = workers_combobox.get()
+    print(selection)
+    label["text"] = f"вы выбрали: {selection}"
+    languages = ["Python", "C#", "Java", "JavaScriptwrffefeef"]
+    workers_combobox["values"] = languages
 
-def dismiss(window):
-    window.grab_release()
-    window.destroy()
+workers_list = ["Python", "C#", "Java", "JavaScript"]
+label = ttk.Label()
+label.pack(anchor=NW, fill=X, padx=5, pady=5)
 
-
-def click():
-    window = Toplevel()
-    window.title("new")
-    window.geometry("250x200")
-    window.protocol("WM_DELETE_WINDOW", lambda: dismiss(window))  # перехватываем нажатие на крестик
-    close_button = ttk.Button(window, text="Закрыть окно", command=lambda: dismiss(window))
-    close_button.pack(anchor="center", expand=1)
-    window.grab_set()  # захватываем пользовательский ввод
-
-
-open_button = ttk.Button(text="Создать окно", command=click)
-open_button.pack(anchor="center", expand=1)
+workers_combobox = ttk.Combobox(values=workers_list, state="readonly")
+workers_combobox.pack(anchor=NW, fill=X, padx=5, pady=5)
+workers_combobox.bind("<<ComboboxSelected>>", selected)
 
 root.mainloop()
