@@ -7,16 +7,15 @@ class Main:
         self.airplanes = []
         self.airplane = None
 
-    def select_airplane(self):
+    def select_airplane(self, ind):
         """Func: select airplane from aiprlanes list"""
-        try:
-            for i, pl_class in enumerate(self.airplanes):
-                print(i, pl_class.name)
-            self.airplane = self.airplanes[int(input('Input number of plane: '))]
-        except IndexError:
-            print('Index Error / 0 airplanes')
-        except ValueError:
-            print('Input must be int')
+        self.airplane = self.airplanes[int(ind)]
+
+    def list_airplanes(self):
+        temp = []
+        for i, pl_class in enumerate(self.airplanes):
+            temp.append(str(i) +' '+ str(pl_class.name))
+        return temp
 
     def add_airplane_object(self, info):
         """Func: add airplane to airplanes list"""
@@ -30,80 +29,86 @@ class Main:
         airplane.zones = [zone1, zone2, zone3]
         self.airplanes.append(airplane)
 
-    def del_airplane(self):
+    def del_airplane(self, ind):
         """Func: delete airplane from airplanes list"""
         self.airplanes.remove(self.airplane)
         self.airplane = None
+        data = Main.load_json(self)
+        data.pop(int(ind))
+        with open('sub--basics_of_programming/gui/cfg/data.json',
+                    'w', encoding="utf-8") as f:
+            json.dump(data, f)
+
 
     def plane_info(self):
         """Func: print airplane info"""
-        if self.airplane is not None:
-            pl_name, zones = self.airplane.plane_info()
-            print(f'Plane name: {pl_name}')
-            for zone in zones:
-                print(zone)
-        else:
-            print('Choose airplane!')
+        temp = ''
+        pl_name, zones = self.airplane.plane_info()
+        temp += f'Plane name: {pl_name}\n\n'
+        for zone in zones:
+            temp+= str(zone)+'\n'
+        return temp
 
-    def booking(self):
+
+    def booking(self, inp_zone, seat):
         """Func: booking"""
         if self.airplane is not None:
-            inp_zone = int(input(f'What zone u want? '
-                                    f'(1 - eco ({self.airplane.zones[0].price}), '
-                                    f'2 - busi ({self.airplane.zones[1].price}), '
-                                    f'3 - elite ({self.airplane.zones[2].price})): '))
             if inp_zone == 1:
-                print(str(self.airplane.zones[0]))
                 print(self.airplane.reserve_seat(self.airplane.zones[0],
-                int(input('Number of seat: '))))
+                int(seat)))
             elif inp_zone == 2:
-                print(str(self.airplane.zones[1]))
                 print(self.airplane.reserve_seat(self.airplane.zones[1],
-                int(input('Number of seat: '))))
+                int(seat)))
             elif inp_zone == 3:
-                print(str(self.airplane.zones[2]))
                 print(self.airplane.reserve_seat(self.airplane.zones[2],
-                int(input('Number of seat: '))))
+                int(seat)))
             else:
                 print('Incorrect')
         else:
             print('Choose airplane!')
 
-    def del_book(self):
+    def del_book(self, inp_zone, seat):
         """Func: delete booking"""
-        if self.airplane is not None:
-            inp_zone = int(input('What zone u want del? (1 - eco, 2 - busi, 3 - elite): '))
-            if inp_zone == 1:
-                print(self.airplane.del_reserve(self.airplane.zones[0], int(input('What seat?: '))))
-            elif inp_zone == 2:
-                print(self.airplane.del_reserve(self.airplane.zones[1], int(input('What seat?: '))))
-            elif inp_zone == 3:
-                print(self.airplane.del_reserve(self.airplane.zones[2], int(input('What seat?: '))))
-            else:
-                print('Incorrect')
-        else:
-            print('Choose airplane!')
+        if inp_zone == 1:
+            print(self.airplane.del_reserve(self.airplane.zones[0], int(seat)))
+        elif inp_zone == 2:
+            print(self.airplane.del_reserve(self.airplane.zones[1], int(seat)))
+        elif inp_zone == 3:
+            print(self.airplane.del_reserve(self.airplane.zones[2], int(seat)))
+
+
 
     def load_json(self):
         try:
-            with open('sub--basics_of_programming/another/gui/cfg/data.json', 'r', encoding="utf-8") as f:
+            with open('sub--basics_of_programming/gui/cfg/data.json',
+                      'r', encoding="utf-8") as f:
                 return json.load(f)
         except FileNotFoundError:
-            return []
+            return FileNotFoundError
 
-    def add_airplane(self, data, info):
-        json_str = {'name': info[0],
-                    'e_seats': info[1]*[0],
-                    'e_price': info[2],
-                    'b_seats': info[3]*[0],
-                    'b_price': info[4],
-                    'f_seats': info[5]*[0],
-                    'f_price': info[6],
-                    }
-        with open('sub--basics_of_programming/another/gui/cfg/data.json', 'w', encoding="utf-8") as f:
-            data.append(json_str)
-            json.dump(data, f)
+    def add_airplane(self, data, info, syncflag):
+        if syncflag == 0:
+            json_str = {'name': info[0],
+                        'e_seats': info[1]*[0],
+                        'e_price': info[2],
+                        'b_seats': info[3]*[0],
+                        'b_price': info[4],
+                        'f_seats': info[5]*[0],
+                        'f_price': info[6],
+                        }
+            with open('sub--basics_of_programming/gui/cfg/data.json',
+                    'w', encoding="utf-8") as f:
+                data.append(json_str)
+                json.dump(data, f)
         Main.add_airplane_object(self, info)
+
+    def seats(self, zone):
+        if zone == 1:
+            return self.airplane.zones[0].seats
+        if zone == 2:
+            return self.airplane.zones[1].seats
+        if zone == 3:
+            return self.airplane.zones[2].seats
 
 
 class Airplane:
@@ -152,7 +157,7 @@ class Zone:
         self.tariff = tariff
         self.price = price
         self.seats = seats
- 
+
 
     def __str__(self):
         res = ''

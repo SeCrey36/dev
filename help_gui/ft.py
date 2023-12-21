@@ -1,9 +1,8 @@
 """GUI"""
 
-import sys # чтобы выйти из проги можно было
-import os # чтобы гайд.тхт открыть можно было
-import tkinter as tk # ну типа сама библиотека
-from tkinter import messagebox # пачиму та без этого месседж бокс не работаит хезе
+import os
+import tkinter as tk
+from tkinter import messagebox
 from tkinter import scrolledtext
 from tkinter import ttk
 import back as bk
@@ -57,10 +56,6 @@ def show_info_about_programm():
 def openreadme():
     filename = 'help_gui/cfg/guide.txt'
     os.system("start " + filename)
-
-
-def quit_from_programm():
-    sys.exit()
 
 
 def update_combobox():
@@ -268,7 +263,7 @@ def mainwin(workers_list):
     submenu_down.add_command(label = 'Добавить нового рабочего',
                              command = lambda: open_create_win(win, ''))
     submenu_down.add_separator()
-    submenu_down.add_command(label = 'Выход из программы', command = quit_from_programm)
+    submenu_down.add_command(label = 'Выход из программы', command = dismiss)
 
     help_menu = tk.Menu(menu_top, tearoff = 0)
     menu_top.add_cascade(label = 'Справка', menu = help_menu)

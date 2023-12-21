@@ -1,3 +1,0 @@
-import b
-
-b.test()
