@@ -67,7 +67,7 @@ class HourlyEmployee(Employee):
         """
         :return:
         """
-        return self.hourly_rate * self.hours
+        return int(self.hourly_rate) * int(self.hours)
 
     def get_info(self):
         """
@@ -99,7 +99,7 @@ class Manager(Employee):
         """
         :return:
         """
-        return self.salary + self.bonus
+        return int(self.salary) + int(self.bonus)
 
     def get_info(self):
         """
@@ -133,7 +133,7 @@ class Executive(Employee):
         """
         :return:
         """
-        return self.salary + self.bonus + self.stock_options
+        return int(self.salary) + int(self.bonus) + int(self.stock_options)
 
     def get_info(self):
         """

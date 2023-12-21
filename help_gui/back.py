@@ -44,7 +44,7 @@ class SalariedEmployee(Employee):
         """
         return ['ФИО ' + str(self.name),
                 'Должность ' + str(self.title),
-                'Вознаграждение ' + str(self.salary)]
+                'Вознаграждение ' + str(int(self.salary))]
 
 
 class HourlyEmployee(Employee):
@@ -99,7 +99,7 @@ class Manager(Employee):
         """
         :return:
         """
-        return self.salary + self.bonus
+        return int(self.salary) + int(self.bonus)
 
     def get_info(self):
         """
@@ -133,7 +133,7 @@ class Executive(Employee):
         """
         :return:
         """
-        return self.salary + self.bonus + self.stock_options
+        return int(self.salary) + int(self.bonus) + int(self.stock_options)
 
     def get_info(self):
         """
@@ -186,28 +186,3 @@ class Company:
         :return:
         """
         self.employees.pop(employee_index)
-
-    def change_title(self, employee_index, new_title,
-                     new_salary, hourly_rate, hours, bonus, stock_options):
-        """
-        grand костыль
-        """
-        old_employee = self.employees[employee_index]
-        if new_title == 'Hourly':
-            if not isinstance(old_employee, HourlyEmployee):
-                employee = HourlyEmployee(old_employee.name,
-                                          hourly_rate, hours)
-                self.employees[employee_index] = employee
-        elif new_title == 'Manager':
-            if not isinstance(old_employee, Manager):
-                employee = Manager(old_employee.name, new_salary, bonus)
-                self.employees[employee_index] = employee
-        elif new_title == 'Executive':
-            if not isinstance(old_employee, Executive):
-                employee = Executive(old_employee.name,
-                                     new_salary, bonus, stock_options)
-                self.employees[employee_index] = employee
-        elif new_title == 'Freelancer':
-            if not isinstance(old_employee, Manager):
-                employee = SalariedEmployee(old_employee.name, new_salary)
-                self.employees[employee_index] = employee
