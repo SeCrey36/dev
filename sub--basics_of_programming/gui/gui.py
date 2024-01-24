@@ -5,13 +5,11 @@ from tkinter import messagebox
 from tkinter import ttk
 from tkinter import scrolledtext
 import backend as bk
+import json
 
 
 
-def main_window():
-    def donothing():
-        print('Done')
-
+def main_window(): 
     def show_info_about_programm():
         messagebox.showinfo("About program",
                             "In this program u can edit airplanes and reservations")
@@ -43,6 +41,11 @@ def main_window():
                                 font = ("Calibri", 15, "bold"), fg='green', background=color_back)
             sync_label.place(x=10, y=365, height=30, width=100)
         except TypeError:
+            messagebox.showerror("Error", "Cannot sync with database")
+            sync_label = tk.Label(frame, text = "Error sync",
+                                font = ("Calibri", 15, "bold"), fg='red', background=color_back)
+            sync_label.place(x=10, y=365, height=30, width=100)
+        except json.decoder.JSONDecodeError:
             messagebox.showerror("Error", "Cannot sync with database")
             sync_label = tk.Label(frame, text = "Error sync",
                                 font = ("Calibri", 15, "bold"), fg='red', background=color_back)
@@ -142,12 +145,20 @@ def main_window():
                 main_thread.booking(zone, seats_combobox.get().split()[0])
                 messagebox.showinfo("Done", "Seat reserved!")
                 textbox_print()
+                destroys()
+
         def del_res():
             if seats_combobox.get().split()[1] == 'reservated':
                 main_thread.del_book(zone, seats_combobox.get().split()[0])
                 messagebox.showinfo("Done", "Seat unreserved!")
                 textbox_print()
+                destroys()
 
+        def destroys():
+            seats_combobox.destroy()
+            bt_reserv.destroy()
+            bt_unreserv.destroy()
+        
         try:
             zone = int(zones_combobox.get().split()[0])
             seats = main_thread.seats(zone)
@@ -163,16 +174,15 @@ def main_window():
                 bt_reserv = tk.Button(frame, text = "Do reservation",
                         font = ("Calibri", 12, "bold"), command = accept_res)
                 bt_reserv.place(x=375, y=215, height=30, width=300)
-                bt_reserv = tk.Button(frame, text = "Del reservation",
+                bt_unreserv = tk.Button(frame, text = "Del reservation",
                         font = ("Calibri", 12, "bold"), command = del_res)
-                bt_reserv.place(x=375, y=245, height=30, width=300)
+                bt_unreserv.place(x=375, y=245, height=30, width=300)
             else:
                 messagebox.showerror("Error", "All seats reserved")
         except AttributeError:
             messagebox.showerror("Error", "Plane not selected")
 
 
-    # НАСТРОЙКА ОКНА
     win = tk.Tk()
     win.title("AutoAirplane")
     win.iconbitmap('sub--basics_of_programming/gui/cfg/icon.ico')
@@ -182,7 +192,9 @@ def main_window():
     color_back = '#D8BFD8'
     color_fg = '#E6E6FA'
 
-    # МЕНЮ ПРОГРАММЫ
+
+    
+
     menuTop = tk.Menu(win)
     win.config(menu = menuTop)
 
@@ -196,9 +208,11 @@ def main_window():
     menuTop.add_cascade(label = 'Help', menu = helpMenu)
     helpMenu.add_command(label = 'About program', command = show_info_about_programm)
 
+
+
+
     main_thread = bk.Main()
 
-    # ТЕЛО ПРОГРАММЫ
     frame = tk.Frame(win, width=700, height=400, background=color_back)
     info_label = tk.Label(frame, text = "Information", font = ("Calibri", 15, "bold"),
                     background=color_back)

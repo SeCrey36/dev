@@ -129,8 +129,8 @@ class Airplane:
     def reserve_seat(zone, seat_number):
         """Func: booking"""
         try:
-            if zone.seats[seat_number-1] == 0:
-                zone.seats[seat_number-1] = 1
+            if zone.seats[seat_number] == 0:
+                zone.seats[seat_number] = 1
                 return f"Seat {seat_number} in {zone.name} reserved."
             return f"No available seats in {zone.name}."
         except IndexError:
@@ -141,8 +141,8 @@ class Airplane:
     def del_reserve(zone, seat_number):
         """Func: delete booking"""
         try:
-            if zone.seats[seat_number-1] == 1:
-                zone.seats[seat_number-1] = 0
+            if zone.seats[seat_number] == 1:
+                zone.seats[seat_number] = 0
                 return f"Reservation for seat {seat_number} in {zone.name} canceled."
             return f"No reservation found for seat {seat_number} in {zone.name}."
         except IndexError:

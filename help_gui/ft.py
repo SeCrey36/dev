@@ -262,7 +262,6 @@ def mainwin(workers_list):
     menu_top.add_cascade(label = 'Действие', menu = submenu_down)
     submenu_down.add_command(label = 'Добавить нового рабочего',
                              command = lambda: open_create_win(win, ''))
-    submenu_down.add_separator()
     submenu_down.add_command(label = 'Выход из программы', command = dismiss)
 
     help_menu = tk.Menu(menu_top, tearoff = 0)
