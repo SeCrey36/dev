@@ -1,33 +1,36 @@
-def hex_interpreter(h):
-    h = h.lstrip('#')
-    return list(int(h[i:i + 2], 16) for i in (0, 2, 4))
+import logging
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
+# Устанавливаем уровень логов
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                     level=logging.INFO)
 
-def rgb_interpreter(rgb):
-    return '#%02x%02x%02x' % rgb
+logger = logging.getLogger(__name__)
 
-def lighten(h, percent):
-    color = hex_interpreter(h)
-    goal_1 = color[0] + (255 - color[0]) * percent // 100
-    goal_2 = color[1] + (255 - color[1]) * percent // 100
-    goal_3 = color[2] + (255 - color[2]) * percent // 100
-    print(color)
-    print(goal_1, goal_2, goal_3)
-    color = (goal_1, goal_2, goal_3)
-    return rgb_interpreter(color)
+# Обработчик команды /start
+def start(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Привет! Я бот для поиска тиммейтов. Расскажи немного о себе и чему ты хочешь научиться.")
 
-def darken(h, percent):
-    color = hex_interpreter(h)
-    goal_1 = color[0] * percent // 100
-    goal_2 = color[1] * percent // 100
-    goal_3 = color[2] * percent // 100
-    print(color)
-    print(goal_1, goal_2, goal_3)
-    color = (goal_1, goal_2, goal_3)
-    return rgb_interpreter(color)
+# Обработчик текстовых сообщений
+def echo(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Спасибо! Мы добавим тебя в базу данных и найдем подходящих тиммейтов для тебя.")
 
+def main():
+    # Инициализируем бота и токен
+    updater = Updater(token='YOUR_TOKEN', use_context=True)
+    dispatcher = updater.dispatcher
 
+    # Обработчик команды /start
+    start_handler = CommandHandler('start', start)
+    dispatcher.add_handler(start_handler)
 
-print(darken('#000000', 100))
-print(lighten('#99CCFF', 50))
-print(darken('#45A1F0', 20))
+    # Обработчик текстовых сообщений
+    echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
+    dispatcher.add_handler(echo_handler)
+
+    # Запускаем бота
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,23 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}news{% endblock %}
+
+{% block content %}
+    <h1>Main</h1>
+    <p>main really.</p>
+    <h1>{{ title }}</h1>
+    {% include 'main/test.html'%}
+
+    {% for val in values %}
+        {% if val == 'suck' %}
+            {% filter upper %}
+            <p>{{val}}</p>
+            {% endfilter %}
+        {% endif %}
+    {% endfor %}
+    <br>
+    {% for val in dict %}
+        <p>{{val}}</p>
+    {% endfor %}
+
+{% endblock %}
